@@ -59,15 +59,46 @@ namespace FenBaoApiTest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("d0615df1-f3a5-4097-9c62-4f124a71596a"),
+                            Id = new Guid("039f4b7e-5a85-47a5-be57-cb12818e09de"),
                             ActivityScore = 2.0m,
-                            ActivityTime = new DateTime(2020, 12, 9, 10, 33, 2, 771, DateTimeKind.Local).AddTicks(6920),
+                            ActivityTime = new DateTime(2020, 12, 9, 11, 2, 38, 818, DateTimeKind.Local).AddTicks(9768),
                             ActivtyAddress = "博文楼",
                             ActivtyStatus = true,
                             Comment = "",
                             Name = "1",
                             ParticipantsNum = 2
                         });
+                });
+
+            modelBuilder.Entity("FenBaoApiTest.Models.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ActivityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CommentText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
+
+                    b.ToTable("Comment");
+                });
+
+            modelBuilder.Entity("FenBaoApiTest.Models.Comment", b =>
+                {
+                    b.HasOne("FenBaoApiTest.Models.Activity", "activity")
+                        .WithMany("Comments")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -17,10 +17,25 @@ namespace FenBaoApiTest.Controllers
         {
             _activityRepository = activityRepository;
         }
+        [HttpGet]
         public IActionResult GetActivity()
         {
-            var routes = _activityRepository.GetActivities();
-            return Ok(routes);
+            var activityRoutesFromRepo = _activityRepository.GetActivities();
+            if (activityRoutesFromRepo == null || activityRoutesFromRepo.Count() <= 0 )
+            {
+                return NotFound("未找到活动");
+            }
+            return Ok(activityRoutesFromRepo);
+        }
+        [HttpGet("{ActivityId}")]
+        public IActionResult GetActivityById(Guid ActivityId)
+        {
+            var activityRoutesFromRepo = _activityRepository.GetActivity(ActivityId);
+            if (activityRoutesFromRepo == null )
+            {
+                return NotFound("未找到对应活动");
+            }
+            return Ok(activityRoutesFromRepo);
         }
     }
 }
