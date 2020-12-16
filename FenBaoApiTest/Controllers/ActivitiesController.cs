@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FenBaoApiTest.Dtos;
 using FenBaoApiTest.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
 
 namespace FenBaoApiTest.Controllers
 {
@@ -13,21 +15,26 @@ namespace FenBaoApiTest.Controllers
     public class ActivitiesController : ControllerBase
     {
         private IActivityRepository _activityRepository;
-        public ActivitiesController(IActivityRepository activityRepository)
+        private readonly IMapper _mapper;
+        public ActivitiesController(IActivityRepository activityRepository,IMapper mapper)
         {
             _activityRepository = activityRepository;
+            _mapper = mapper;
         }
         [HttpGet]
-        public IActionResult GetActivity()
+        [HttpHead]
+        public IActionResult GetActivity([FromQuery]string keyword)
         {
-            var activityRoutesFromRepo = _activityRepository.GetActivities();
+            var activityRoutesFromRepo = _activityRepository.GetActivities(keyword);
             if (activityRoutesFromRepo == null || activityRoutesFromRepo.Count() <= 0 )
             {
                 return NotFound("未找到活动");
             }
-            return Ok(activityRoutesFromRepo);
+            var activitiesdto = _mapper.Map<IEnumerable<ActivitiesDto>>(activityRoutesFromRepo);
+            return Ok(activitiesdto);
         }
         [HttpGet("{ActivityId}")]
+        [HttpHead]
         public IActionResult GetActivityById(Guid ActivityId)
         {
             var activityRoutesFromRepo = _activityRepository.GetActivity(ActivityId);
@@ -35,7 +42,8 @@ namespace FenBaoApiTest.Controllers
             {
                 return NotFound("未找到对应活动");
             }
-            return Ok(activityRoutesFromRepo);
+            var activitiesdto = _mapper.Map<ActivitiesDto>(activityRoutesFromRepo);
+            return Ok(activitiesdto);
         }
     }
 }

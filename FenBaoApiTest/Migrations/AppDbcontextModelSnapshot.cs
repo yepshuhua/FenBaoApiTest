@@ -40,10 +40,6 @@ namespace FenBaoApiTest.Migrations
                     b.Property<bool>("ActivtyStatus")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -59,12 +55,11 @@ namespace FenBaoApiTest.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("039f4b7e-5a85-47a5-be57-cb12818e09de"),
+                            Id = new Guid("e109e697-a99f-40ab-b929-cee7b1338bf2"),
                             ActivityScore = 2.0m,
-                            ActivityTime = new DateTime(2020, 12, 9, 11, 2, 38, 818, DateTimeKind.Local).AddTicks(9768),
+                            ActivityTime = new DateTime(2020, 12, 16, 17, 39, 43, 603, DateTimeKind.Local).AddTicks(3795),
                             ActivtyAddress = "博文楼",
                             ActivtyStatus = true,
-                            Comment = "",
                             Name = "1",
                             ParticipantsNum = 2
                         });
@@ -72,9 +67,10 @@ namespace FenBaoApiTest.Migrations
 
             modelBuilder.Entity("FenBaoApiTest.Models.Comment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<Guid>("ActivityId")
                         .HasColumnType("uniqueidentifier");
@@ -89,7 +85,7 @@ namespace FenBaoApiTest.Migrations
 
                     b.HasIndex("ActivityId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("comments");
                 });
 
             modelBuilder.Entity("FenBaoApiTest.Models.Comment", b =>

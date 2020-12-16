@@ -8,8 +8,14 @@ namespace FenBaoApiTest.Services
 {
    public interface IActivityRepository
     {
-        IEnumerable<Activity> GetActivities();
+        IEnumerable<Activity> GetActivities( string keyword);
 
-        Activity GetActivity(Guid ActivityId);
+        Activity GetActivity(Guid ActivityRouteId);
+
+        bool ActivityExists(Guid ActivityRouteId);
+
+        IEnumerable<Comment> GetCommentByActivityId(Guid ActivityRouteId);
+
+        Comment GetComment(int CommentId);
     }
 }

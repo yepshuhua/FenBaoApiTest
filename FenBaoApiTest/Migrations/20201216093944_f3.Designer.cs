@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FenBaoApiTest.Migrations
 {
     [DbContext(typeof(AppDbcontext))]
-    [Migration("20201209022600_f")]
-    partial class f
+    [Migration("20201216093944_f3")]
+    partial class f3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,10 +42,6 @@ namespace FenBaoApiTest.Migrations
                     b.Property<bool>("ActivtyStatus")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -57,6 +53,50 @@ namespace FenBaoApiTest.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("activities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("e109e697-a99f-40ab-b929-cee7b1338bf2"),
+                            ActivityScore = 2.0m,
+                            ActivityTime = new DateTime(2020, 12, 16, 17, 39, 43, 603, DateTimeKind.Local).AddTicks(3795),
+                            ActivtyAddress = "博文楼",
+                            ActivtyStatus = true,
+                            Name = "1",
+                            ParticipantsNum = 2
+                        });
+                });
+
+            modelBuilder.Entity("FenBaoApiTest.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<Guid>("ActivityId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CommentText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActivityId");
+
+                    b.ToTable("comments");
+                });
+
+            modelBuilder.Entity("FenBaoApiTest.Models.Comment", b =>
+                {
+                    b.HasOne("FenBaoApiTest.Models.Activity", "activity")
+                        .WithMany("Comments")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using AutoMapper;
 
 namespace FenBaoApiTest
 {
@@ -32,6 +33,9 @@ namespace FenBaoApiTest
                 //option.UseSqlServer(@"Data Source=(localdb)\ProjectsV13;Initial Catalog=FenBaoDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
                 option.UseSqlServer(Configuration["DbContext:ConnectionString"]);
             });
+
+            //É¨ÃèprofileÎÄ¼þ
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -33,13 +33,6 @@ namespace FenBaoApiTest.Models
         /// 活动人数
         /// </summary>
         public int? ParticipantsNum { get; set; }
-
-        /// <summary>
-        /// 活动评论
-        /// </summary>
-        [MaxLength(50)]
-        public string Comment { get; set; }
-
         /// <summary>
         /// 活动开始时间
         /// </summary>
@@ -60,9 +53,11 @@ namespace FenBaoApiTest.Models
         /// </summary>
         public bool ActivtyStatus { get; set; }
 
+
         /// <summary>
-        /// 评论
+        /// 活动评论
         /// </summary>
-        public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
