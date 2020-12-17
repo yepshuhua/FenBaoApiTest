@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FenBaoApiTest.Models;
 
 namespace FenBaoApiTest.Controllers
 {
@@ -36,7 +37,7 @@ namespace FenBaoApiTest.Controllers
             }
             return Ok(_mapper.Map<IEnumerable<CommentDto>>(CommentFromRepo));
         }
-        [HttpGet("{CommentId}")]
+        [HttpGet("{CommentId}",Name = "GetComment")]
         public IActionResult GetComment(Guid activityId, int commentId)
         {
             if (!_activityRepository.ActivityExists(activityId))
@@ -50,7 +51,23 @@ namespace FenBaoApiTest.Controllers
             }
             return Ok(_mapper.Map<CommentDto>(CommentFromRepo));
         }
+        [HttpPost]
+        public IActionResult CreateComment([FromRoute]Guid activityId,[FromBody]CommentCreateDto commentCreateDto)
+        {
+            if (!_activityRepository.ActivityExists(activityId))
+            {
+                return NotFound("活动不存在");
+            }
 
+            var CommentModel = _mapper.Map<Comment>(commentCreateDto);
+            _activityRepository.AddComment(activityId, CommentModel);
+            _activityRepository.Save();
+            var CommentReturn = _mapper.Map<CommentDto>(CommentModel);
+            return CreatedAtRoute("GetComment", 
+                new { activityId = CommentModel.ActivityId, CommentId = CommentModel.Id },
+                CommentReturn);
+        }
+        
     }
    
 }

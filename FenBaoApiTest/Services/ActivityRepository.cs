@@ -21,6 +21,30 @@ namespace FenBaoApiTest.Services
             return _context.activities.Any(a => a.Id == ActivityRouteId);
         }
 
+        public void AddActivity(Activity activity)
+        {
+            if (activity == null)
+            {
+                throw new ArgumentNullException(nameof(activity));
+            }
+            _context.activities.Add(activity);
+
+        }
+
+        public void AddComment(Guid ActivityId, Comment comment)
+        {
+            if (ActivityId == Guid.Empty)
+            {
+                throw new ArgumentNullException(nameof(ActivityId));
+            }
+            if (comment == null)
+            {
+                throw new ArgumentNullException(nameof(comment));
+            }
+            comment.ActivityId = ActivityId;
+            _context.comments.Add(comment);
+        }
+
         public IEnumerable<Activity> GetActivities(string keyword)
         {
             IQueryable<Activity> result = _context.activities.Include(a => a.Comments);
@@ -45,6 +69,11 @@ namespace FenBaoApiTest.Services
         public IEnumerable<Comment> GetCommentByActivityId(Guid ActivityRouteId)
         {
             return _context.comments.Where(c => c.ActivityId == ActivityRouteId).ToList();
+        }
+
+        public bool Save()
+        {
+            return (_context.SaveChanges()>=0);
         }
     }
 }

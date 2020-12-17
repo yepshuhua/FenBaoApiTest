@@ -18,14 +18,14 @@ namespace FenBaoApiTest.Models
         /// <summary>
         /// 活动名称 
         /// </summary>
-        [Required]
+        [Required(ErrorMessage ="活动名称必须填写")]
         [MaxLength(50)]
         public string Name { get; set; }
 
         /// <summary>
         /// 活动分值
         /// </summary>
-        [Required]
+        [Required(ErrorMessage ="分值格式错误")]
         [Column(TypeName ="decimal(18,2)")]
         public decimal ActivityScore { get; set; }
 

@@ -17,5 +17,8 @@ namespace FenBaoApiTest.Services
         IEnumerable<Comment> GetCommentByActivityId(Guid ActivityRouteId);
 
         Comment GetComment(int CommentId);
+        void AddActivity(Activity activity);
+        void AddComment(Guid ActivityId, Comment comment);
+        bool Save();
     }
 }

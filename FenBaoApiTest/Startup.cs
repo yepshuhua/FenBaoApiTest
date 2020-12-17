@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FenBaoApiTest
 {
@@ -27,7 +28,27 @@ namespace FenBaoApiTest
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(setupAction => { setupAction.ReturnHttpNotAcceptable = true; }).AddXmlDataContractSerializerFormatters();
+            services.AddControllers(setupAction => { setupAction.ReturnHttpNotAcceptable = true; })
+                .AddXmlDataContractSerializerFormatters().
+                ConfigureApiBehaviorOptions
+                (setupAction => {
+                    setupAction.InvalidModelStateResponseFactory = context =>
+      {
+          var problemDateil = new ValidationProblemDetails(context.ModelState)
+          {
+              Type = "1",
+              Title = "数据验证失败",
+              Status = StatusCodes.Status422UnprocessableEntity,
+              Detail = "请看详细说明",
+              Instance = context.HttpContext.Request.Path
+          };
+          problemDateil.Extensions.Add("traceId", context.HttpContext.TraceIdentifier);
+          return new UnprocessableEntityObjectResult(problemDateil)
+          {
+              ContentTypes = { "appcation/problem+json" }
+          };
+      };
+                }); 
             services.AddTransient<IActivityRepository, ActivityRepository>();
             services.AddDbContext<AppDbcontext>(option=> {
                 //option.UseSqlServer(@"Data Source=(localdb)\ProjectsV13;Initial Catalog=FenBaoDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");

@@ -13,6 +13,7 @@ namespace FenBaoApiTest.ProFiles
         public CommentProfile()
         {
             CreateMap<Comment, CommentDto>();
+            CreateMap<CommentCreateDto, Comment>();
         }
     }
 }
