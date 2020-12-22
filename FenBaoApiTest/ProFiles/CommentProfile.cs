@@ -14,6 +14,7 @@ namespace FenBaoApiTest.ProFiles
         {
             CreateMap<Comment, CommentDto>();
             CreateMap<CommentCreateDto, Comment>();
+            CreateMap<Comment, CommentCreateDto>();
         }
     }
 }

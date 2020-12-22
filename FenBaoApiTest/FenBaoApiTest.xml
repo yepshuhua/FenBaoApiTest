@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>FenBaoApiTest</name>
+    </assembly>
+    <members>
+        <member name="P:FenBaoApiTest.Dtos.CommentDto.StudentId">
+            <summary>
+            学生ID
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Dtos.CommentDto.ActivityId">
+            <summary>
+            活动ID
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Dtos.CommentDto.CommentText">
+            <summary>
+            评论
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Activity.Name">
+            <summary>
+            活动名称 
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Activity.ActivityScore">
+            <summary>
+            活动分值
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Activity.ParticipantsNum">
+            <summary>
+            活动人数
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Activity.ActivityTime">
+            <summary>
+            活动开始时间
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Activity.ActivityEndTime">
+            <summary>
+            活动结束时间
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Activity.ActivtyAddress">
+            <summary>
+            活动地址
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Activity.ActivtyStatus">
+            <summary>
+            活动状态
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Activity.Comments">
+            <summary>
+            活动评论
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Comment.Id">
+            <summary>
+            评论ID
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Comment.StudentId">
+            <summary>
+            学生ID
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Comment.ActivityId">
+            <summary>
+            活动ID
+            </summary>
+        </member>
+        <member name="P:FenBaoApiTest.Models.Comment.CommentText">
+            <summary>
+            评论
+            </summary>
+        </member>
+    </members>
+</doc>

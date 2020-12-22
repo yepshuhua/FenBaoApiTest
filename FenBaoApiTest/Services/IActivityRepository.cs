@@ -20,5 +20,7 @@ namespace FenBaoApiTest.Services
         void AddActivity(Activity activity);
         void AddComment(Guid ActivityId, Comment comment);
         bool Save();
+        void DeleteActivity(Activity activity);
+        void DeleteComment(Comment comment);
     }
 }

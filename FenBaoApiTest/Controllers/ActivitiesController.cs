@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using FenBaoApiTest.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace FenBaoApiTest.Controllers
 {
@@ -54,6 +55,45 @@ namespace FenBaoApiTest.Controllers
             _activityRepository.Save();
             var activitytoReture = _mapper.Map<ActivitiesDto>(activitymodel);
             return CreatedAtRoute("GetActivityById", new { activityId = activitytoReture.Id }, activitytoReture);
+        }
+        [HttpPut]
+        public IActionResult UpdateActivity([FromRoute]Guid activityId,[FromBody] ActivityUpdateDto activityUpdateDto)
+        {
+            if (!_activityRepository.ActivityExists(activityId))
+            {
+                return NotFound("未找到对应活动");
+            }
+            var activityFromRepo = _activityRepository.GetActivity(activityId);
+            _mapper.Map(activityUpdateDto, activityFromRepo);
+            _activityRepository.Save();
+            return NoContent();
+        }
+        [HttpPatch]
+        public IActionResult PartiallyUpdateActivity([FromRoute] Guid activityId,[FromBody]JsonPatchDocument<ActivityUpdateDto> patchDocument) 
+        {
+            if (!_activityRepository.ActivityExists(activityId))
+            {
+                return NotFound("未找到对应活动");
+            }
+            var activityFromRepo= _activityRepository.GetActivity(activityId);
+            var activitypatch = _mapper.Map<ActivityUpdateDto>(activityFromRepo);
+            patchDocument.ApplyTo(activitypatch);
+            _mapper.Map(activitypatch, activityFromRepo);
+            _activityRepository.Save();
+            return NoContent();
+        }
+        [HttpDelete("{activityId}")]
+        public IActionResult DeleteActivity([FromRoute] Guid activityId)
+        {
+            if (!_activityRepository.ActivityExists(activityId))
+            {
+                return NotFound("未找到对应活动");
+            }
+            var Activity= _activityRepository.GetActivity(activityId);
+            _activityRepository.DeleteActivity(Activity);
+            _activityRepository.Save();
+
+            return NoContent();
         }
     }
 }

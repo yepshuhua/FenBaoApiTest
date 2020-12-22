@@ -45,6 +45,16 @@ namespace FenBaoApiTest.Services
             _context.comments.Add(comment);
         }
 
+        public void DeleteActivity(Activity activity)
+        {
+            _context.activities.Remove(activity);
+        }
+
+        public void DeleteComment(Comment comment)
+        {
+            _context.comments.Remove(comment);
+        }
+
         public IEnumerable<Activity> GetActivities(string keyword)
         {
             IQueryable<Activity> result = _context.activities.Include(a => a.Comments);
@@ -75,5 +85,8 @@ namespace FenBaoApiTest.Services
         {
             return (_context.SaveChanges()>=0);
         }
+
+      
+
     }
 }

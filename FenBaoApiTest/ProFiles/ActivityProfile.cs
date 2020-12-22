@@ -15,6 +15,8 @@ namespace FenBaoApiTest.ProFiles
         {
             CreateMap<Activity, ActivitiesDto>();
             CreateMap<ActivityCreateDto, Activity>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
+            CreateMap<ActivityUpdateDto, Activity>();
+            CreateMap<Activity, ActivityUpdateDto>();
         }
     }
 }
