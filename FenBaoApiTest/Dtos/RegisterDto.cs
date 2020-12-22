@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace FenBaoApiTest.Dtos
 {
-    public class LoginDto
+    public class RegisterDto
     {
         [Required]
         public string Phone { get; set; }
         [Required]
         public string Password { get; set; }
-       
+        [Required]
+        [Compare(nameof(Password),ErrorMessage ="密码输入不一致")]
+        public string ConfirmPassword { get; set; }
     }
 }

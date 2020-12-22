@@ -13,6 +13,11 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.OpenApi.Models;
 using System.IO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
+using FenBaoApiTest.Models;
 
 namespace FenBaoApiTest
 {
@@ -29,6 +34,23 @@ namespace FenBaoApiTest
         [Obsolete]
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<AppcationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbcontext>();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(option =>
+                {
+                    var sercetByte = Encoding.UTF8.GetBytes(Configuration["Authentication"]);
+                    option.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = Configuration["Authentication:Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["Authentication:Audience"],
+                        ValidateLifetime = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(sercetByte)
+                    };
+
+                });
             services.AddControllers(setupAction => { setupAction.ReturnHttpNotAcceptable = true; })
                 .AddXmlDataContractSerializerFormatters().
                 ConfigureApiBehaviorOptions
@@ -90,8 +112,12 @@ namespace FenBaoApiTest
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Platform Enterprise WebApi API");
             });
+            // where
             app.UseRouting();
-
+            // who
+            app.UseAuthentication();
+            // what can do 
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 //endpoints.MapGet("/test", async context =>

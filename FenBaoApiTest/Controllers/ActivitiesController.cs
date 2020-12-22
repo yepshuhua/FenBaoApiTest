@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using FenBaoApiTest.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FenBaoApiTest.Controllers
 {
@@ -48,6 +49,8 @@ namespace FenBaoApiTest.Controllers
             return Ok(activitiesdto);
         }
         [HttpPost]
+        [Authorize(AuthenticationSchemes ="Bearer")]
+        [Authorize(Roles ="Admin")]
         public IActionResult CreateActivity([FromBody] ActivityCreateDto activityCreateDto )
         {
             var activitymodel = _mapper.Map<Activity>(activityCreateDto);
@@ -57,6 +60,8 @@ namespace FenBaoApiTest.Controllers
             return CreatedAtRoute("GetActivityById", new { activityId = activitytoReture.Id }, activitytoReture);
         }
         [HttpPut]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = "Admin")]
         public IActionResult UpdateActivity([FromRoute]Guid activityId,[FromBody] ActivityUpdateDto activityUpdateDto)
         {
             if (!_activityRepository.ActivityExists(activityId))
@@ -69,6 +74,8 @@ namespace FenBaoApiTest.Controllers
             return NoContent();
         }
         [HttpPatch]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = "Admin")]
         public IActionResult PartiallyUpdateActivity([FromRoute] Guid activityId,[FromBody]JsonPatchDocument<ActivityUpdateDto> patchDocument) 
         {
             if (!_activityRepository.ActivityExists(activityId))
@@ -83,6 +90,8 @@ namespace FenBaoApiTest.Controllers
             return NoContent();
         }
         [HttpDelete("{activityId}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteActivity([FromRoute] Guid activityId)
         {
             if (!_activityRepository.ActivityExists(activityId))
